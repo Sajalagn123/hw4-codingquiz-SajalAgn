@@ -41,6 +41,12 @@ var questions = [
     },
 
 ]
+
+if(window.highscores == undefined)
+{
+    window.highscores = [];
+}
+
 var score = 0;
 var timer = document.getElementById("time");
 var startButton = document.getElementById("start");
@@ -54,6 +60,8 @@ var option2 = document.getElementById("choice2");
 var option3 = document.getElementById("choice3");
 var option4 = document.getElementById("choice4");
 var finalScore = document.getElementById("final-score");
+var submit = document.getElementById("submit");
+var initials = document.getElementById("initials");
 var questionNumber = 0
 
 if (document.querySelector("#start") === true) {
@@ -171,3 +179,13 @@ var timeTicker = function() {
 }
 
 
+submit.addEventListener("click", function() {
+    var student = {
+        name:initials.value,
+        score:score
+    }
+    highscores.push(student);
+    console.log(window.highscores);
+    window.location = "highscores.html";
+    
+})

@@ -6,49 +6,51 @@
 var questions = [
     {
         question: "What tag do I use to write a heading in HTML?",
-        option1:"A.asdf",
-        option2:"B.fghfhhj",
-        option3:"C.ytuy78",
-        option4:"D.ytutgugj",
+        option1:"A. <h1>",
+        option2:"B. <h2>",
+        option3:"C. Both A and B",
+        option4:"D. <br>",
         answer: 3
     },
     
     {
         question: "What tag do I use to write a footer in HTML?",
-        option1:"A.asd hhkf",
-        option2:"B.fghfhhj kjhk ",
-        option3:"C.ytuy78 o;lp",
-        option4:"D.ytutgug ikjo j",
+        option1:"A. <footer>",
+        option2:"B.<p> ",
+        option3:"C. <btn>",
+        option4:"D. <a>",
         answer: 1
     },
 
     {
         question: "What tag do I use to add an image in HTML?",
-        option1:"A.asd hhkf 7686",
-        option2:"B.fghfhhj kjhk 78uh ",
-        option3:"C.ytuy78 o;l  uhyhgui",
-        option4:"D.ytutgug ikjo gh hjj",
+        option1:"A. <img>",
+        option2:"B. <picture>",
+        option3:"C.<insert img>",
+        option4:"D. <photo>",
         answer: 1
     },
 
     {
         question: "What tag do I use to add a link in HTML?",
-        option1:"A.asd hhk yhf",
-        option2:"B.fghfhhj kjh jhn k ",
-        option3:"C.ytuy78 o;l iojh lp",
-        option4:"D.ytutgug ikjo u hjki uhij",
+        option1:"A. <p>",
+        option2:"B. <a> ",
+        option3:"C. <CSS>",
+        option4:"D. <header>",
         answer: 2
     },
 
 ]
 
-if(window.highscores == undefined)
+if(localStorage.getItem("highscores") == null)
 {
-    window.highscores = [];
+    localStorage.setItem("highscores","[]");
 }
+var highscores = JSON.parse(localStorage.getItem("highscores"));
 
 var score = 0;
 var timer = document.getElementById("time");
+var timeFont = document.querySelector(".timer");
 var startButton = document.getElementById("start");
 var endScreen = document.getElementById("end-screen");
 var displayQuestion = document.getElementById("questions");
@@ -62,6 +64,7 @@ var option4 = document.getElementById("choice4");
 var finalScore = document.getElementById("final-score");
 var submit = document.getElementById("submit");
 var initials = document.getElementById("initials");
+var feedback = document.getElementById("feedback");
 var questionNumber = 0
 
 if (document.querySelector("#start") === true) {
@@ -100,12 +103,20 @@ function showNextQuestion(optionNumber) {
     if (optionNumber == questions[questionNumber].answer)
     {
         score++;
+        feedback.innerText = "Correct";
+        feedback.classList.remove("hide")
+        setTimeout(function(){
+            feedback.classList.add("hide")
+        },1000);
     }   
     else {
         seconds -= 10
+        feedback.innerText = "Wrong";
+        feedback.classList.remove("hide")
+        setTimeout(function() {
+            feedback.classList.add("hide")
+        },1000);
     }
-
-    //console.log(questionNumber," == ",questions[3]);
     
     if (questionNumber+1 == questions.length)
     {
@@ -113,15 +124,8 @@ function showNextQuestion(optionNumber) {
         return;
     }
 
-    //console.log("Question number is "+questionNumber);
-
     questionNumber++; // 0 will become 1, 1 will become 2,
 
-
-    
-    
-
-//    console.log("option "+optionNumber+" was clicked");
 
     questionNumberDisplay.innerText = "Question "+(questionNumber+1);
     questionTitle.innerText = questions[questionNumber].question;
@@ -164,6 +168,8 @@ function setAlert() {
   //alert("Time is up!");
     endScreen.style.display = "block";
     displayQuestion.style.display = "none";
+    timer.style.display = "none";
+    timeFont.style.display = "none";
     finalScore.innerText = score;
 }     
 var seconds = 60*2;
@@ -183,9 +189,10 @@ submit.addEventListener("click", function() {
     var student = {
         name:initials.value,
         score:score
-    }
-    highscores.push(student);
-    console.log(window.highscores);
-    window.location = "highscores.html";
-    
-})
+    }      
+    highscores.push(student); 
+    localStorage.setItem("highscores", JSON.stringify(highscores))    
+    console.log(window.highscores);     
+    window.location = "highscores.html";     
+         
+})     

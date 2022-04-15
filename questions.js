@@ -10,7 +10,7 @@ var questions = [
         option2:"B.fghfhhj",
         option3:"C.ytuy78",
         option4:"D.ytutgugj",
-        answer: "a"
+        answer: 3
     },
     
     {
@@ -19,7 +19,7 @@ var questions = [
         option2:"B.fghfhhj kjhk ",
         option3:"C.ytuy78 o;lp",
         option4:"D.ytutgug ikjo j",
-        answer: "a"
+        answer: 1
     },
 
     {
@@ -28,7 +28,7 @@ var questions = [
         option2:"B.fghfhhj kjhk 78uh ",
         option3:"C.ytuy78 o;l  uhyhgui",
         option4:"D.ytutgug ikjo gh hjj",
-        answer: "a"
+        answer: 1
     },
 
     {
@@ -37,20 +37,23 @@ var questions = [
         option2:"B.fghfhhj kjh jhn k ",
         option3:"C.ytuy78 o;l iojh lp",
         option4:"D.ytutgug ikjo u hjki uhij",
-        answer: "a"
+        answer: 2
     },
 
 ]
+var score = 0;
 var timer = document.getElementById("time");
 var startButton = document.getElementById("start");
 var endScreen = document.getElementById("end-screen");
 var displayQuestion = document.getElementById("questions");
 var hideMenu = document.getElementById("start-screen");
+var questionNumberDisplay = document.getElementById("question-number");
 var questionTitle = document.getElementById("question-title");
 var option1 = document.getElementById("choice1");
 var option2 = document.getElementById("choice2");
 var option3 = document.getElementById("choice3");
 var option4 = document.getElementById("choice4");
+var finalScore = document.getElementById("final-score");
 var questionNumber = 0
 
 if (document.querySelector("#start") === true) {
@@ -67,7 +70,9 @@ for(var i=0; i < questions.lenght; i++) {
 function showQuestion() {    
     displayQuestion.style.display = "block";
     hideMenu.style.display = "none";
-    questionTitle.innerText = questions[questionNumber].question;
+    questionNumberDisplay.innerText = "Question "+(questionNumber+1);
+
+    questionTitle.innerText = questions[questionNumber].question;    
     
     option1.innerText = questions[questionNumber].option1;
     option2.innerText = questions[questionNumber].option2;
@@ -75,15 +80,49 @@ function showQuestion() {
     option4.innerText = questions[questionNumber].option4;
 }
 
+
+
 function showNextQuestion(optionNumber) {
-    questionNumber++; // 0 will become 1, 1 will become 2, 
-    console.log("option "+optionNumber+" was clicked");
+
+    if (questionNumber+1 > questions.length)
+    {
+        return;
+    }
+
+    if (optionNumber == questions[questionNumber].answer)
+    {
+        score++;
+    }   
+    else {
+        seconds -= 10
+    }
+
+    //console.log(questionNumber," == ",questions[3]);
+    
+    if (questionNumber+1 == questions.length)
+    {
+        setAlert();
+        return;
+    }
+
+    //console.log("Question number is "+questionNumber);
+
+    questionNumber++; // 0 will become 1, 1 will become 2,
+
+
+    
+    
+
+//    console.log("option "+optionNumber+" was clicked");
+
+    questionNumberDisplay.innerText = "Question "+(questionNumber+1);
     questionTitle.innerText = questions[questionNumber].question;
     
     option1.innerText = questions[questionNumber].option1;
     option2.innerText = questions[questionNumber].option2;
     option3.innerText = questions[questionNumber].option3;
     option4.innerText = questions[questionNumber].option4;
+
 }
 
 option1.addEventListener("click", function() {
@@ -116,6 +155,8 @@ document.querySelector("#start").addEventListener("click", function() {
 function setAlert() {
   //alert("Time is up!");
     endScreen.style.display = "block";
+    displayQuestion.style.display = "none";
+    finalScore.innerText = score;
 }     
 var seconds = 60*2;
 var timeTicker = function() {
